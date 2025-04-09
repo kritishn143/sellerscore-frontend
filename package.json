@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "frontend": "cd frontend && npm start",
-    "backend": "cd backend && npm start",
-    "dev": "concurrently \"npm run frontend\" \"npm run backend\""
-  },
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "frontend": "cd frontend && npm start",
+  "backend": "cd backend && npm start",
+  "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+  "build": "cd frontend && npm run build && mkdir -p ../dist && cp -r build/* ../dist/"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
