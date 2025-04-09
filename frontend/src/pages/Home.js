@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import BusinessList from '../components/BusinessList';
-const apiUrl = process.env.REACT_APP_API_URL;
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
