@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import BusinessList from '../components/BusinessList';
-const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -16,7 +16,7 @@ const Home = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/categories`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/categories`);
         setCategories(response.data);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -25,7 +25,7 @@ const Home = () => {
 
     const fetchBusinesses = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/approved-businesses`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/approved-businesses`);
         setBusinesses(response.data);
         await fetchRatingsAndReviews(response.data);
       } catch (error) {
@@ -45,7 +45,7 @@ const Home = () => {
     const counts = {};
     for (const business of businesses) {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/reviews`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/reviews`, {
           params: { businessId: business._id }
         });
         const reviews = response.data;
