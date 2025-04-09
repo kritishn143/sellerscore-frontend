@@ -1,0 +1,59 @@
+:root {
+    --navbar-bg: #0066c5; /* Slate Blue */
+    --button-bg: #0066c5;  /* White */
+    --button-text: #ffffff; /* White */
+    --button-hover-bg: #294697; /* Dark Slate Blue */
+    --button-hover-text: #ffffff; /* White */
+    --shadow-color: rgba(0, 0, 0, 0.2); /* Shadow color */
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 10px var(--shadow-color); 
+    padding: 10px;
+    background-color: var(--navbar-bg); /* Apply background color */
+}
+
+.logo {
+    height: 40px; /* Adjust as per your logo size */
+}
+
+.navbar-button {
+    margin-left: auto; /* Pushes the button to the right */
+    padding: 10px 20px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; 
+    font-weight: bold; 
+}
+
+.navbar-button:hover {
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-text);
+}
+
+.footer {
+    background-color: var(--navbar-bg); 
+    color: #ffffff; 
+    text-align: center; 
+    padding: 20px 0; 
+    width: 100%; 
+    position: relative; 
+    bottom: 0;
+}
+
+.footer-logo {
+    position: absolute;
+    top: 10px;
+    left: 100px;
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+    object-position: center;
+    margin-bottom: 10px;
+}
