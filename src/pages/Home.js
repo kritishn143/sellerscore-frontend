@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import BusinessList from '../components/BusinessList';
-const apiUrl = process.env.REACT_APP_API_URL;
+import Navbar from '../components/NavBar';
+import Footer from '../components/Footer';
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -85,46 +86,72 @@ const Home = () => {
   const recommendations = getRecommendations();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
-      <nav className="bg-blue-600 text-white px-6 py-4 flex justify-between items-center shadow-lg">
-        <Link to="/" className="flex items-center space-x-2">
-          <img src="/seller.gif" alt="Score Logo" className="h-10" />
-        </Link>
-        {isLoggedIn ? (
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
-            onClick={() => navigate('/dashboard')}
-          >
-            Dashboard
-          </button>
-        ) : (
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
-            onClick={() => navigate('/login')}
-          >
-            Login
-          </button>
-        )}
-      </nav>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col">
+      <Navbar
+        navItems={
+          isLoggedIn ? (
+            <button
+              className="bg-blue-500 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded-lg shadow transition duration-200"
+              onClick={() => navigate('/useraccount')}
+            >
+              Profile
+            </button>
+          ) : (
+            <button
+              className="bg-blue-500 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded-lg shadow transition duration-200"
+              onClick={() => navigate('/login')}
+            >
+              Login
+            </button>
+          )
+        }
+      />
+      {/* Hero Section */}
+      <section className="pt-28 pb-10 px-4 md:px-0 text-center">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-blue-800 mb-4 drop-shadow">Welcome to Sellerscore</h1>
+        <p className="text-lg md:text-xl text-blue-600 mb-8">Discover, review, and recommend the best businesses in every category.</p>
+        <div className="flex justify-center gap-4">
+          {isLoggedIn ? (
+            <button
+              className="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition duration-200"
+              onClick={() => navigate('/useraccount')}
+            >
+              Go to Dashboard
+            </button>
+          ) : (
+            <button
+              className="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition duration-200"
+              onClick={() => navigate('/login')}
+            >
+              Login / Signup
+            </button>
+          )}
+        </div>
+      </section>
 
-      {/* Main Content */}
-      <main className="flex-grow p-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Top Categories</h1>
-        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+      {/* Categories */}
+      <section className="max-w-5xl mx-auto w-full mb-10">
+        <h2 className="text-2xl font-bold text-blue-700 mb-4">Top Categories</h2>
+        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
           {categories.map((category) => (
-            <li key={category} className="bg-gray-100 p-4 rounded-lg shadow-sm hover:bg-blue-50">
-              <Link to={`/category/${category}`} className="text-blue-600 font-semibold">
+            <li key={category} className="bg-white p-6 rounded-xl shadow hover:bg-blue-50 transition cursor-pointer">
+              <Link to={`/category/${category}`} className="text-blue-700 font-semibold text-lg">
                 {category}
               </Link>
             </li>
           ))}
         </ul>
+      </section>
 
+      {/* Business List */}
+      <section className="max-w-5xl mx-auto w-full mb-10">
         <BusinessList />
+      </section>
 
-        <h2 className="text-2xl font-semibold text-gray-800 mt-10 mb-4">Recommended Businesses by Category</h2>
-        <div className="space-y-6">
+      {/* Recommendations */}
+      <section className="max-w-5xl mx-auto w-full mb-16">
+        <h2 className="text-2xl font-bold text-blue-700 mb-4">Recommended Businesses by Category</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {Object.keys(recommendations)
             .sort((a, b) => {
               if (recommendations[b].average !== recommendations[a].average) {
@@ -133,31 +160,24 @@ const Home = () => {
               return recommendations[b].reviewCount - recommendations[a].reviewCount;
             })
             .map((category) => (
-              <div key={category} className="bg-white p-4 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold text-gray-800">{category}</h3>
-                <div className="mt-2">
-                  <h4 className="text-lg font-semibold text-blue-600">
-                    <Link to={`/business/${recommendations[category].business.businessName}`}>
-                      {recommendations[category].business.businessName}
-                    </Link>
-                  </h4>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <span className="text-yellow-500">{recommendations[category].average}★</span>
-                    <span className="text-gray-500">({recommendations[category].reviewCount} reviews)</span>
-                  </div>
+              <div key={category} className="bg-white p-6 rounded-xl shadow-md flex flex-col items-start">
+                <h3 className="text-xl font-bold text-blue-800 mb-2">{category}</h3>
+                <h4 className="text-lg font-semibold text-blue-600 mb-1">
+                  <Link to={`/business/${recommendations[category].business.businessName}`}>
+                    {recommendations[category].business.businessName}
+                  </Link>
+                </h4>
+                <div className="flex items-center space-x-2 mt-1">
+                  <span className="text-yellow-500 font-bold">{recommendations[category].average}★</span>
+                  <span className="text-gray-500">({recommendations[category].reviewCount} reviews)</span>
                 </div>
               </div>
             ))}
         </div>
-      </main>
+      </section>
 
       {/* Footer */}
-      <footer className="bg-blue-600 text-white py-4">
-        <div className="flex items-center justify-center space-x-2">
-          <img src="/score.gif" alt="Score Logo" className="h-8" />
-          <p>&copy; {currentYear} Sellerscore. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

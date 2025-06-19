@@ -10,11 +10,11 @@ const Home = React.lazy(() => import('./pages/Home'));
 const SignupPage = React.lazy(() => import('./pages/SignupPage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
 const AdminDashboard = React.lazy(() => import('./pages/AdminDashboard'));
-const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const BusinessRequestForm = React.lazy(() => import('./components/BusinessRequestForm'));
 const UserAccount = React.lazy(() => import('./pages/UserAccount'));
 const CategoryPage = React.lazy(() => import('./pages/CategoryPage'));
 const BusinessDetails = React.lazy(() => import('./pages/BusinessDetails'));
+const ClaimBusiness = React.lazy(() => import('./pages/ClaimBusiness'));
 
 const App = () => {
   return (
@@ -26,12 +26,12 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/dashboard" element={<ProtectedRoute component={Dashboard} />} />
             <Route path="/admin-dashboard" element={<AdminRoute component={AdminDashboard} />} />
             <Route path="/business-request" element={<ProtectedRoute component={BusinessRequestForm} />} />
             <Route path="/useraccount" element={<ProtectedRoute component={UserAccount} />} />
             <Route path="/category/:category" element={<CategoryPage />} />
             <Route path="/business/:name" element={<BusinessDetails />} />
+            <Route path="/claim-business/:id" element={<ProtectedRoute component={ClaimBusiness} />} />
           </Routes>
         </Suspense>
       </div>

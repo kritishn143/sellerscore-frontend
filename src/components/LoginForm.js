@@ -19,7 +19,7 @@ const LoginForm = () => {
       if (response.data.role === 'admin') {
         navigate('/admin-dashboard');
       } else {
-        navigate('/dashboard');
+        navigate('/useraccount');
       }
     } catch (error) {
       if (error.response && error.response.data.message) {

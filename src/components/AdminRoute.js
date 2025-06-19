@@ -11,7 +11,7 @@ const AdminRoute = ({ component: Component, ...rest }) => {
   }
 
   if (!isAdmin) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/user" />;
   }
 
   return <Component {...rest} />;

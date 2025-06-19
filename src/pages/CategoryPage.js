@@ -3,9 +3,10 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import './CategoryPage.css'; // Import the CSS file
+import Footer from '../components/Footer';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 const CategoryPage = () => {
   const { category } = useParams();
   const [businesses, setBusinesses] = useState([]);
@@ -67,11 +68,20 @@ const CategoryPage = () => {
   });
 
   return (
-    <>
-      <NavBar />
-      <div className="category-page-container">
-        <h1 className="category-page-title">Top Businesses in {category}</h1>
-        <div className="category-page-business-list">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col">
+      <NavBar
+        navItems={
+          <button
+            className="bg-blue-500 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded-lg shadow transition duration-200"
+            onClick={() => navigate('/useraccount')}
+          >
+            Dashboard
+          </button>
+        }
+      />
+      <main className="flex-grow pt-28 pb-10 px-4 md:px-0 max-w-5xl mx-auto w-full">
+        <h1 className="text-3xl font-bold text-blue-800 mb-8">Businesses in {category}</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedBusinesses.map((business) => (
             <div key={business._id} className="category-page-business-card">
               <div className="category-page-business-image-container">{business.imageUrl && (
@@ -90,6 +100,14 @@ const CategoryPage = () => {
               <div className="category-page-business-info">
                 <h2 className="category-page-business-name">
                   <Link to={`/business/${business.businessName}`}>{business.businessName}</Link>
+                  {business.verificationStatus === 'approved' && (
+                    <span title="Verified" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: 6 }}>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" clipRule="evenodd" d="M8 0L9.99182 1.3121L12.3696 1.29622L13.3431 3.48797L15.3519 4.77336L14.9979 7.14888L16 9.32743L14.431 11.1325L14.1082 13.5126L11.8223 14.1741L10.277 16L8 15.308L5.72296 16L4.17772 14.1741L1.89183 13.5126L1.569 11.1325L0 9.32743L1.00206 7.14888L0.648112 4.77336L2.65693 3.48797L3.6304 1.29622L6.00818 1.3121L8 0Z" fill="#0095F6"></path>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M10.4036 5.20536L7.18853 8.61884L6.12875 7.49364C5.8814 7.23102 5.46798 7.21864 5.20536 7.466C4.94274 7.71335 4.93036 8.12677 5.17771 8.38939L6.71301 10.0195C6.9709 10.2933 7.40616 10.2933 7.66405 10.0195L11.3546 6.10111C11.6019 5.83848 11.5896 5.42507 11.3269 5.17771C11.0643 4.93036 10.6509 4.94274 10.4036 5.20536Z" fill="white"></path>
+                      </svg>
+                    </span>
+                  )}
                 </h2>
                 <p className="category-page-business-address">{business.address}</p>
                 <p className="category-page-business-website">{business.website}</p>
@@ -99,14 +117,9 @@ const CategoryPage = () => {
             </div>
           ))}
         </div>
-      </div>
-      <footer className="footer">
-             <img src="/score.gif" alt="score logo" className="footer-logo" style={{ width: "50px", height: "50px" }} />
-
-        <p>&copy; {currentYear} Sellerscore. All rights reserved.</p>
-      </footer>
-    </>
-    
+      </main>
+      <Footer />
+    </div>
   );
 };
 
