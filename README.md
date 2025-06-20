@@ -1,70 +1,134 @@
-# Getting Started with Create React App
+## Test Credentials 
+```bash
+For Admin
+test@sellerscore.com
+!Sellerscore1
+```
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Project Name
 
-## Available Scripts
+SellerScore is a premier business rating platform designed to enhance transparency and trust in consumer transactions. Our system allows buyers to rate companies based on their satisfaction with purchased products or received services. Higher ratings reflect superior business performance. To further safeguard against fraudulent practices, SellerScore incorporates user-generated feedback and supporting evidence, ensuring that each rating is credible and actionable. This approach helps mitigate scams and fosters a more reliable marketplace.
 
-In the project directory, you can run:
+## Table of Contents
 
-### `npm start`
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Make sure you Download and install "https://www.mongodb.com/try/download/community"
 
-### `npm test`
+Database Name: test  
+Collection Name: users
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Clone the project repository to your local machine
+git clone <repository-url>
 
-### `npm run build`
+Navigate into the project directory
+cd <project-directory>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+This project is divided into two main parts: the backend and the frontend.
+You will need to install dependencies for both.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Backend Installation
+Navigate to the backend directory
+```bash 
+cd backend
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ Install the backend dependencies
+```bash 
+npm install
+```
 
-### `npm run eject`
+Return to the project root directory
+```bash
+cd ..
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Frontend Installation
+Navigate to the frontend directory
+```bash
+cd frontend
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Install the frontend dependencies
+```bash
+npm install
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Return to the project root directory
+```bash
+cd ..
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Running the Project
+After installing all dependencies, you can run both the frontend and backend simultaneously
+using the dev script defined in the project's root package.json file.
 
-## Learn More
+From the project root directory, run:
+```bash
+npm run dev
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This command uses concurrently to run both the frontend and backend in parallel.
+The frontend will be available at http://localhost:3000, and the backend will start with nodemon for live reloading during development.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Instructions on how to use the project and any relevant examples.
 
-### Analyzing the Bundle Size
+Here is an example of how to use the project:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm run dev
+```
 
-### Making a Progressive Web App
+This command will start the project and make it available at http://localhost:3000. You can then access the project in your web browser and begin using its features.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Please note that you may need to configure certain settings or provide additional input depending on the specific requirements of your project.
 
-### Advanced Configuration
+## Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Guidelines on how to contribute to the project.
 
-### Deployment
+We welcome contributions from the community to help improve this project. If you would like to contribute, please follow these guidelines:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. Fork the repository and create a new branch for your contribution.
+2. Make your changes and ensure that the code is clean and well-documented.
+3. Test your changes thoroughly to ensure they do not introduce any bugs.
+4. Submit a pull request with a clear description of your changes and why they are beneficial.
 
-### `npm run build` fails to minify
+By contributing to this project, you agree to abide by the [Code of Conduct] and the [Contributor License Agreement].
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Thank you for your interest in contributing to our project!
+
+## License
+
+Information about the project's license.
+
+## SellerScore Copyright
+
+All rights reserved. SellerScore is a registered trademark of SellerScore Inc. Unauthorized use or reproduction of any content, including but not limited to text, images, and logos, is strictly prohibited without prior written consent from SellerScore Inc.
+
+## Disclaimer
+
+The information provided in this document is for general informational purposes only. While we strive to keep the information up to date and accurate, we make no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability with respect to the document or the information, products, services, or related graphics contained in the document for any purpose. Any reliance you place on such information is therefore strictly at your own risk.
+
+In no event will we be liable for any loss or damage including without limitation, indirect or consequential loss or damage, or any loss or damage whatsoever arising from loss of data or profits arising out of, or in connection with, the use of this document.
+
+Through this document, you are able to link to other websites that are not under the control of SellerScore Inc. We have no control over the nature, content, and availability of those sites. The inclusion of any links does not necessarily imply a recommendation or endorse the views expressed within them.
+
+Every effort is made to keep the document up and running smoothly. However, SellerScore Inc takes no responsibility for, and will not be liable for, the document being temporarily unavailable due to technical issues beyond our control.
+
+## Contact
+
+For any inquiries or concerns regarding this document, please contact us at: 
+
+workforkritish@gmail.com 
+connectwithakreeti@gmail.com
+
+
