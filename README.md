@@ -1,9 +1,4 @@
-## Test Credentials 
-```bash
-For Admin
-test@sellerscore.com
-!Sellerscore1
-```
+
 
 # Project Name
 
