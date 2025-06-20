@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -24,6 +25,8 @@ const UserProfile = () => {
   const [websiteEditError, setWebsiteEditError] = useState("");
   const [verificationRequests, setVerificationRequests] = useState([]);
   const [claimRequests, setClaimRequests] = useState([]);
+  const [usernameError, setUsernameError] = useState("");
+  const [emailError, setEmailError] = useState("");
 
   const navigate = useNavigate();
 
@@ -102,9 +105,63 @@ const UserProfile = () => {
     fetchClaimRequests();
   }, [navigate]);
 
+  // Username validation (on blur)
+  const handleUsernameBlur = async () => {
+    if (!username) return;
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/check-username`, { params: { username } });
+      if (res.data.exists && user && username !== user.username) {
+        setUsernameError("Username is already taken");
+      } else {
+        setUsernameError("");
+      }
+    } catch {
+      setUsernameError("Error checking username");
+    }
+  };
+
+  // Email validation (on blur)
+  const handleEmailBlur = async () => {
+    if (!email) return;
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/check-email`, { params: { email } });
+      if (res.data.exists && user && email !== user.email) {
+        setEmailError("Email is already taken");
+      } else {
+        setEmailError("");
+      }
+    } catch {
+      setEmailError("Error checking email");
+    }
+  };
+
+  const usernameRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,11}$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const handleUsernameChange = (e) => {
+    const value = e.target.value;
+    setUsername(value);
+    if (!usernameRegex.test(value)) {
+      setUsernameError('Username must be 5-7 characters long, and include both letters and numbers');
+    } else {
+      setUsernameError('');
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    if (!emailRegex.test(value)) {
+      setEmailError('Invalid email format');
+    } else {
+      setEmailError('');
+    }
+  };
+
   // Handle profile update
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
+    if (usernameError || emailError) return;
     const token = localStorage.getItem("token");
 
     try {
@@ -302,22 +359,26 @@ const UserProfile = () => {
                 <input
                   type="text"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={handleUsernameChange}
+                  onBlur={handleUsernameBlur}
                   disabled={!editMode}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
+                {usernameError && <div className="text-red-600 text-xs mt-1">{usernameError}</div>}
               </div>
               <div>
                 <label className="block text-gray-700 font-semibold mb-1">Email:</label>
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleEmailChange}
+                  onBlur={handleEmailBlur}
                   disabled={!editMode}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
+                {emailError && <div className="text-red-600 text-xs mt-1">{emailError}</div>}
               </div>
             </div>
             <div className="flex gap-4 mt-4">
@@ -332,6 +393,7 @@ const UserProfile = () => {
                 <button
                   type="submit"
                   className="bg-green-600 hover:bg-green-800 text-white font-semibold py-2 px-6 rounded-lg shadow transition duration-200"
+                  disabled={!!usernameError || !!emailError}
                 >
                   Save Changes
                 </button>
