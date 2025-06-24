@@ -304,7 +304,13 @@ const AdminDashboard = () => {
                   />
                   <div className="flex items-center gap-4 mb-2">
                     {request.imageUrl && (
-                      <img src={`${REACT_APP_API_URL.split('/api')[0]}${request.imageUrl}`} alt={request.businessName} className="w-16 h-16 rounded-lg object-cover border-2 border-blue-200" />
+                      <img 
+                        src={request.imageUrl.startsWith('http://') || request.imageUrl.startsWith('https://')
+                          ? request.imageUrl
+                          : `${REACT_APP_API_URL.split('/api')[0]}${request.imageUrl}`}
+                        alt={request.businessName}
+                        className="w-16 h-16 rounded-lg object-cover border-2 border-blue-200" 
+                      />
                     )}
                     <div>
                       <h2 className="text-xl font-bold text-blue-700 mb-1">
@@ -398,7 +404,13 @@ const AdminDashboard = () => {
                 <div key={request._id} className="bg-white rounded-xl shadow-md p-6 flex flex-col gap-2 relative">
                   <div className="flex items-center gap-4 mb-2">
                     {request.imageUrl && (
-                      <img src={`${REACT_APP_API_URL.split('/api')[0]}${request.imageUrl}`} alt={request.businessName} className="w-16 h-16 rounded-lg object-cover border-2 border-blue-200" />
+                      <img 
+                        src={request.imageUrl.startsWith('http://') || request.imageUrl.startsWith('https://')
+                          ? request.imageUrl
+                          : `${REACT_APP_API_URL.split('/api')[0]}${request.imageUrl}`}
+                        alt={request.businessName}
+                        className="w-16 h-16 rounded-lg object-cover border-2 border-blue-200" 
+                      />
                     )}
                     <div>
                       <h2 className="text-xl font-bold text-blue-700 mb-1">
@@ -487,7 +499,13 @@ const AdminDashboard = () => {
                 <div key={claim._id} className="bg-white rounded-xl shadow-md p-6 flex flex-col gap-2 relative">
                   <div className="flex items-center gap-4 mb-2">
                     {claim.businessId?.imageUrl && (
-                      <img src={`${REACT_APP_API_URL.split('/api')[0]}${claim.businessId.imageUrl}`} alt={claim.businessId.businessName} className="w-16 h-16 rounded-lg object-cover border-2 border-blue-200" />
+                      <img 
+                        src={claim.businessId.imageUrl.startsWith('http://') || claim.businessId.imageUrl.startsWith('https://')
+                          ? claim.businessId.imageUrl
+                          : `${REACT_APP_API_URL.split('/api')[0]}${claim.businessId.imageUrl}`}
+                        alt={claim.businessId.businessName}
+                        className="w-16 h-16 rounded-lg object-cover border-2 border-blue-200" 
+                      />
                     )}
                     <div>
                       <h2 className="text-xl font-bold text-blue-700 mb-1">{claim.businessId?.businessName}</h2>

@@ -18,13 +18,13 @@ const SignupForm = () => {
     }
     const usernameRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,11}$/;
     if (!usernameRegex.test(username)) {
-      return 'Username must be 5-7 characters long, and include both letters and numbers';
+      return 'Username must be 5-10 characters long, and include both letters and numbers';
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return 'Invalid email format';
     }
-    const passwordRegex = /^(?=.*[!@#$%^&*()]).{8,}$/;
+    const passwordRegex = /^(?=.*[!@#$%^&*()]).{6,15}$/;
     if (!passwordRegex.test(password)) {
       return 'Password must be at least 8 characters long and include a special character';
     }

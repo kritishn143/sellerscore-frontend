@@ -20,8 +20,10 @@ const UserProfile = () => {
     address: "",
     website: "",
     image: null,
+    imageUrl: "",
   });
   const [imageFile, setImageFile] = useState(null); // New state for the image file
+  const [imageUrlError, setImageUrlError] = useState("");
   const [websiteEditError, setWebsiteEditError] = useState("");
   const [verificationRequests, setVerificationRequests] = useState([]);
   const [claimRequests, setClaimRequests] = useState([]);
@@ -194,12 +196,32 @@ const UserProfile = () => {
       category: request.category,
       address: request.address,
       website: request.website,
+      imageUrl: request.imageUrl || "",
     });
     setImageFile(null); // Reset the image file when editing a request
+    setImageUrlError(""); // Reset image URL error
+  };
+
+  const validateImageUrl = (url) => {
+    if (!url) return true; // Empty URL is valid (optional field)
+    try {
+      const urlObj = new URL(url);
+      return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+    } catch {
+      return false;
+    }
   };
 
   const handleUpdateRequest = async (e) => {
     e.preventDefault();
+    if (websiteEditError || imageUrlError) return;
+    
+    // Validate image URL if provided
+    if (currentRequest.imageUrl && !validateImageUrl(currentRequest.imageUrl)) {
+      setImageUrlError('Please enter a valid image URL (e.g., https://example.com/image.jpg)');
+      return;
+    }
+
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
@@ -209,6 +231,9 @@ const UserProfile = () => {
     formData.append("website", currentRequest.website);
     if (imageFile) {
       formData.append("image", imageFile); // Add image file if provided
+    }
+    if (currentRequest.imageUrl) {
+      formData.append("imageUrl", currentRequest.imageUrl); // Add image URL if provided
     }
 
     try {
@@ -238,9 +263,17 @@ const UserProfile = () => {
         category: "",
         address: "",
         website: "",
+        imageUrl: "",
       });
       setImageFile(null); // Reset image file after update
-      alert("Business request updated successfully!");
+      setImageUrlError(""); // Reset image URL error
+      
+      // Show appropriate message based on status
+      if (updatedRequest.updatedRequest.status === 'pending') {
+        alert("Business request updated successfully! Your changes have been sent back to admin for review.");
+      } else {
+        alert("Business request updated successfully!");
+      }
     } catch (error) {
       setError(error.message);
     }
@@ -544,13 +577,38 @@ const UserProfile = () => {
                   )}
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-1">Upload New Image:</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setImageFile(e.target.files[0])}
-                    className="w-full"
-                  />
+                  <label className="block text-gray-700 font-semibold mb-1">Business Image:</label>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-gray-600 text-sm mb-1">Upload Image File:</label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          setImageFile(e.target.files[0]);
+                          setCurrentRequest({ ...currentRequest, imageUrl: '' }); // Clear imageUrl when file is selected
+                          setImageUrlError('');
+                        }}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      />
+                    </div>
+                    <div className="text-center text-gray-500 text-sm">- OR -</div>
+                    <div>
+                      <label className="block text-gray-600 text-sm mb-1">Image URL:</label>
+                      <input
+                        type="url"
+                        value={currentRequest.imageUrl}
+                        onChange={(e) => {
+                          setCurrentRequest({ ...currentRequest, imageUrl: e.target.value });
+                          setImageFile(null); // Clear image when URL is entered
+                          setImageUrlError('');
+                        }}
+                        placeholder="https://example.com/image.jpg"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      />
+                      {imageUrlError && <div className="text-red-600 text-xs mt-1">{imageUrlError}</div>}
+                    </div>
+                  </div>
                 </div>
                 <div className="flex gap-4 mt-4">
                   <button
@@ -562,7 +620,7 @@ const UserProfile = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setCurrentRequest({ id: null, name: '', category: '', address: '', website: '', image: null })}
+                    onClick={() => setCurrentRequest({ id: null, name: '', category: '', address: '', website: '', image: null, imageUrl: '' })}
                     className="bg-gray-400 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg shadow transition duration-200"
                   >
                     Cancel
@@ -590,8 +648,8 @@ const UserProfile = () => {
                   >
                     {claim.businessId?.website}
                   </a>
-                  {/* Show submitted documents */}
-                  {(claim.requiredDocs?.length > 0 || claim.additionalDocs?.length > 0) && (
+                  {/* Show submitted documents only if not approved */}
+                  {claim.status !== 'approved' && (claim.requiredDocs?.length > 0 || claim.additionalDocs?.length > 0) && (
                     <div className="mb-2">
                       <span className="font-semibold">Submitted Documents:</span>
                       <ul className="list-disc ml-6 mt-1">

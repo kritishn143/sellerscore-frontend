@@ -14,9 +14,12 @@ const LoginForm = () => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/login`, { email, password });
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('role', response.data.role); // Store the user's role
       setError('');
-      if (response.data.role === 'admin') {
+      // Fetch user profile to determine role
+      const profileRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/myprofile`, {
+        headers: { Authorization: `Bearer ${response.data.token}` }
+      });
+      if (profileRes.data.role === 'admin') {
         navigate('/admin-dashboard');
       } else {
         navigate('/useraccount');

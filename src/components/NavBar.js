@@ -1,4 +1,4 @@
-// frontend/src/components/Navbar.js
+// frontend/src/components/NavBar.js
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 

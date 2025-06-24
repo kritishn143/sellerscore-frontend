@@ -9,7 +9,7 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const BusinessDetails = () => {
   const { name } = useParams();
   const [business, setBusiness] = useState(null);
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(3);
   const [comment, setComment] = useState('');
   const [reviews, setReviews] = useState([]);
   const [currentYear] = useState(new Date().getFullYear());
@@ -86,6 +86,10 @@ const BusinessDetails = () => {
       alert('You must be logged in to submit a review.');
       return;
     }
+    if (!comment.trim() || comment.length > 256) {
+      alert('Comment is required and must be 256 characters or less.');
+      return;
+    }
     const token = localStorage.getItem('token');
     try {
       if (editingReview) {
@@ -106,7 +110,7 @@ const BusinessDetails = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
-      setRating(0);
+      setRating(3); // Reset to default
       setComment('');
       fetchReviews();
     } catch (error) {
@@ -116,7 +120,7 @@ const BusinessDetails = () => {
 
   const handleEdit = (review) => {
     setEditingReview(review);
-    setRating(review.rating);
+    setRating(review.rating || 3); // Default to 3 if missing
     setComment(review.comment);
   };
 
@@ -212,26 +216,34 @@ const BusinessDetails = () => {
             );
           })()}
           <img
-            className="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-lg mb-4"
-            src={`${REACT_APP_API_URL.split('/api')[0]}${business.imageUrl}`}
+            className="w-32 h-32 rounded-full object-cover shadow-lg mb-4"
+            src={business.imageUrl && (business.imageUrl.startsWith('http://') || business.imageUrl.startsWith('https://')
+              ? business.imageUrl
+              : `${REACT_APP_API_URL.split('/api')[0]}${business.imageUrl}`)}
             alt={business.businessName}
           />
           <h1 className="text-3xl md:text-4xl font-extrabold text-blue-900 flex items-center justify-center gap-2 mb-2">
             {business.businessName}
             {business.verificationStatus === 'approved' && (
-              <span title="Verified" className="inline-block align-middle ml-2">
+              <span className="inline-block align-middle ml-2 relative group">
                 <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path fillRule="evenodd" clipRule="evenodd" d="M8 0L9.99182 1.3121L12.3696 1.29622L13.3431 3.48797L15.3519 4.77336L14.9979 7.14888L16 9.32743L14.431 11.1325L14.1082 13.5126L11.8223 14.1741L10.277 16L8 15.308L5.72296 16L4.17772 14.1741L1.89183 13.5126L1.569 11.1325L0 9.32743L1.00206 7.14888L0.648112 4.77336L2.65693 3.48797L3.6304 1.29622L6.00818 1.3121L8 0Z" fill="#0095F6"></path>
                   <path fillRule="evenodd" clipRule="evenodd" d="M10.4036 5.20536L7.18853 8.61884L6.12875 7.49364C5.8814 7.23102 5.46798 7.21864 5.20536 7.466C4.94274 7.71335 4.93036 8.12677 5.17771 8.38939L6.71301 10.0195C6.9709 10.2933 7.40616 10.2933 7.66405 10.0195L11.3546 6.10111C11.6019 5.83848 11.5896 5.42507 11.3269 5.17771C11.0643 4.93036 10.6509 4.94274 10.4036 5.20536Z" fill="white"></path>
                 </svg>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-0 pointer-events-none whitespace-nowrap z-10">
+                  Verified
+                </div>
               </span>
             )}
             {business.claimStatus === 'approved' && business.verificationStatus !== 'approved' && (
-              <span title="Claimed Business" className="inline-block align-middle ml-2">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="10" cy="10" r="10" fill="#b0b0b0" />
-                  <path d="M6 10.5l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+              <span className="inline-block align-middle ml-2 relative group">
+                <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" clipRule="evenodd" d="M8 0L9.99182 1.3121L12.3696 1.29622L13.3431 3.48797L15.3519 4.77336L14.9979 7.14888L16 9.32743L14.431 11.1325L14.1082 13.5126L11.8223 14.1741L10.277 16L8 15.308L5.72296 16L4.17772 14.1741L1.89183 13.5126L1.569 11.1325L0 9.32743L1.00206 7.14888L0.648112 4.77336L2.65693 3.48797L3.6304 1.29622L6.00818 1.3121L8 0Z" fill="#6B7280"></path>
+                  <path fillRule="evenodd" clipRule="evenodd" d="M10.4036 5.20536L7.18853 8.61884L6.12875 7.49364C5.8814 7.23102 5.46798 7.21864 5.20536 7.466C4.94274 7.71335 4.93036 8.12677 5.17771 8.38939L6.71301 10.0195C6.9709 10.2933 7.40616 10.2933 7.66405 10.0195L11.3546 6.10111C11.6019 5.83848 11.5896 5.42507 11.3269 5.17771C11.0643 4.93036 10.6509 4.94274 10.4036 5.20536Z" fill="white"></path>
                 </svg>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-0 pointer-events-none whitespace-nowrap z-10">
+                  Claimed Business
+                </div>
               </span>
             )}
           </h1>
@@ -275,7 +287,13 @@ const BusinessDetails = () => {
             </div>
             <div>
               <label className="font-semibold text-gray-700">Comment:</label>
-              <textarea value={comment} onChange={(e) => setComment(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
+              <textarea
+                value={comment}
+                maxLength={256}
+                onChange={(e) => setComment(e.target.value.slice(0, 256))}
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              <div className="text-right text-xs text-gray-500">{comment.length}/256</div>
             </div>
             <div className="flex gap-4">
               <button type="submit" className="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded-lg shadow transition duration-200" disabled={!user || !user._id}>
